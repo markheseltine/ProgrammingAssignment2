@@ -1,7 +1,7 @@
 # makeCacheMatrix() takes a matrix and returns a list of
 # get and set functions as follows:
 #   -   get, set - get and set the value of the stored matrix
-#   -   getSolvedMatrix, setSolvedMatrix - get and set the value of a cached 
+#   -   getInverseMatrix, setInverseMatrix - get and set the value of a cached 
 #       inverse of the matrix. The inverse value of the matrix defaults to NULL
 
 makeCacheMatrix <- function(x = matrix()) {
@@ -22,7 +22,7 @@ makeCacheMatrix <- function(x = matrix()) {
     # setInverseMatrix is a function stores the solvedMatrix value in the cache
     # which is held in the enclosing environment
     setInverseMatrix <- function(inverseMatrix) inverseMatrixCache <<- inverseMatrix
-    # getSolvedMatrix just returns the cached value of the solved matrix
+    # getInverseMatrix just returns the cached value of the solved matrix
     getInverseMatrix <- function() inverseMatrixCache
     
     list(set = set, get = get,
@@ -39,14 +39,14 @@ cacheSolve <- function(x, ...) {
     # Retrieve contents of the cached inverse matrix
     inverseMatrix <- x$getInverseMatrix()
     if(!is.null(inverseMatrix)) {
-        # if solvedMatrix is not null, that means we're reading cached data
+        # if solvedMatrix is not null, that means its reading cached data
         message("getting cached data")
-        return(inverseMatrix) # return the cached value (and terminate the function)
+        return(inverseMatrix) # return the cached value
     }
-    # Yhis section is only reached if the cached valued was NULL
+    # (This section is only reached if the cached valued was NULL)
     # Retrieve the (unsolved) matrix
     data <- x$get()
-    # Solve the matrix
+    # Calculate the inverse of the matrix
     inverseMatrix <- solve(data, ...)
     # Store the solved matrix in the cache
     x$setInverseMatrix(inverseMatrix)
